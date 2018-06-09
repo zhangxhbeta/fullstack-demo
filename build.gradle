@@ -13,7 +13,6 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}"
         classpath "io.spring.gradle:propdeps-plugin:0.0.9.RELEASE"
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.21"
-        //jhipster-needle-gradle-buildscript-dependency - JHipster will add additional gradle build script plugins here
     }
 }
 
@@ -24,13 +23,11 @@ plugins {
     id "net.ltgt.apt" version "0.15"
     id "io.spring.dependency-management" version "1.0.3.RELEASE"
     id "com.moowork.node" version "1.2.0"
-    //jhipster-needle-gradle-plugins - JHipster will add additional gradle plugins here
 }
 
 apply plugin: 'java'
 sourceCompatibility=1.8
 targetCompatibility=1.8
-// Until JHipster supports JDK 9
 assert System.properties['java.specification.version'] == '1.8'
 
 apply plugin: 'maven'
@@ -44,19 +41,18 @@ apply plugin: 'idea'
 dependencyManagement {
   imports {
     mavenBom 'io.github.jhipster:jhipster-dependencies:' + jhipster_dependencies_version
-    //jhipster-needle-gradle-dependency-management - JHipster will add additional dependencies management here
   }
 }
 
 defaultTasks 'bootRun'
 
-group = 'top.xhbeta.myapp'
+group = 'top.xhbeta.fullstack.demo'
 version = '0.0.1-SNAPSHOT'
 
 description = ''
 
 bootWar {
-   mainClassName = 'top.xhbeta.myapp.XhipsterApp'
+   mainClassName = 'top.xhbeta.fullstack.demo.FullstackDemoApp'
 }
 
 war {
@@ -64,7 +60,7 @@ war {
 }
 
 springBoot {
-    mainClassName = 'top.xhbeta.myapp.XhipsterApp'
+    mainClassName = 'top.xhbeta.fullstack.demo.FullstackDemoApp'
     buildInfo()
 }
 
@@ -109,7 +105,6 @@ task testReport(type: TestReport) {
 apply from: 'gradle/docker.gradle'
 apply from: 'gradle/sonar.gradle'
 apply from: 'gradle/liquibase.gradle'
-//jhipster-needle-gradle-apply-from - JHipster will add additional gradle scripts to be applied here
 
 if (project.hasProperty('prod')) {
     apply from: 'gradle/profile_prod.gradle'
@@ -135,7 +130,6 @@ repositories {
     jcenter()
     // TODO To remove after final Spring Boot 2 release
     maven { url "https://repo.spring.io/milestone" }
-    //jhipster-needle-gradle-repositories - JHipster will add additional repositories
 }
 
 dependencies {
@@ -216,7 +210,6 @@ dependencies {
     testCompile "org.mockito:mockito-core"
     testCompile "com.mattbertolini:liquibase-slf4j"
     testCompile "org.hamcrest:hamcrest-library"
-    //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 
 task cleanResources(type: Delete) {
