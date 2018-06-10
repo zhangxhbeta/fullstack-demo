@@ -16,32 +16,32 @@ import java.time.Duration;
 
 @Configuration
 @EnableCaching
-@AutoConfigureAfter(value = { MetricsConfiguration.class })
-@AutoConfigureBefore(value = { WebConfigurer.class, DatabaseConfiguration.class })
+@AutoConfigureAfter(value = {MetricsConfiguration.class})
+@AutoConfigureBefore(value = {WebConfigurer.class, DatabaseConfiguration.class})
 public class CacheConfiguration {
 
-    private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration;
+  private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration;
 
-    public CacheConfiguration(JHipsterProperties jHipsterProperties) {
-        JHipsterProperties.Cache.Ehcache ehcache =
-            jHipsterProperties.getCache().getEhcache();
+  public CacheConfiguration(JHipsterProperties jHipsterProperties) {
+    JHipsterProperties.Cache.Ehcache ehcache =
+      jHipsterProperties.getCache().getEhcache();
 
-        jcacheConfiguration = Eh107Configuration.fromEhcacheCacheConfiguration(
-            CacheConfigurationBuilder.newCacheConfigurationBuilder(Object.class, Object.class,
-                ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
-                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(ehcache.getTimeToLiveSeconds())))
-                .build());
-    }
+    jcacheConfiguration = Eh107Configuration.fromEhcacheCacheConfiguration(
+      CacheConfigurationBuilder.newCacheConfigurationBuilder(Object.class, Object.class,
+        ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
+        .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(ehcache.getTimeToLiveSeconds())))
+        .build());
+  }
 
-    @Bean
-    public JCacheManagerCustomizer cacheManagerCustomizer() {
-        return cm -> {
+  @Bean
+  public JCacheManagerCustomizer cacheManagerCustomizer() {
+    return cm -> {
 //            cm.createCache(top.xhbeta.fullstack.demo.repository.UserRepository.USERS_BY_LOGIN_CACHE, jcacheConfiguration);
 //            cm.createCache(top.xhbeta.myapp.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
 //            cm.createCache(top.xhbeta.myapp.domain.User.class.getName(), jcacheConfiguration);
 //            cm.createCache(top.xhbeta.myapp.domain.Authority.class.getName(), jcacheConfiguration);
 //            cm.createCache(top.xhbeta.myapp.domain.User.class.getName() + ".authorities", jcacheConfiguration);
-            // jhipster-needle-ehcache-add-entry
-        };
-    }
+      // jhipster-needle-ehcache-add-entry
+    };
+  }
 }

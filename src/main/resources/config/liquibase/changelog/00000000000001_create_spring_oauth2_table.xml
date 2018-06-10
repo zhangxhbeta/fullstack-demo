@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnusedNamespaceDeclaration -->
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <property name="now" value="now()" dbms="h2"/>
+  <property name="now" value="now()" dbms="mysql"/>
+  <property name="autoIncrement" value="true"/>
+
+  <!-- Manage the OAuth authentication -->
+  <changeSet id="00000000000001" author="spring-security-oauth">
+    <createTable tableName="oauth_client_details">
+      <column name="client_id" type="varchar(255)">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="resource_ids" type="varchar(255)"/>
+      <column name="client_secret" type="varchar(255)"/>
+      <column name="scope" type="varchar(255)"/>
+      <column name="authorized_grant_types" type="varchar(255)"/>
+      <column name="web_server_redirect_uri" type="varchar(255)"/>
+      <column name="authorities" type="varchar(255)"/>
+      <column name="access_token_validity" type="INT"/>
+      <column name="refresh_token_validity" type="INT"/>
+      <column name="additional_information" type="VARCHAR(4000)"/>
+      <column name="autoapprove" type="VARCHAR(4000)"/>
+    </createTable>
+
+    <createTable tableName="oauth_client_token">
+      <column name="token_id" type="varchar(255)"/>
+      <column name="token" type="BLOB"/>
+      <column name="authentication_id" type="varchar(255)"/>
+      <column name="user_name" type="varchar(50)"/>
+      <column name="client_id" type="varchar(255)"/>
+    </createTable>
+
+    <createTable tableName="oauth_access_token">
+      <column name="token_id" type="varchar(255)"/>
+      <column name="token" type="BLOB"/>
+      <column name="authentication_id" type="varchar(255)">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="user_name" type="varchar(50)"/>
+      <column name="client_id" type="varchar(255)"/>
+      <column name="authentication" type="MEDIUMBLOB"/>
+      <column name="refresh_token" type="varchar(255)"/>
+    </createTable>
+
+    <createTable tableName="oauth_refresh_token">
+      <column name="token_id" type="varchar(255)"/>
+      <column name="token" type="BLOB"/>
+      <column name="authentication" type="MEDIUMBLOB"/>
+    </createTable>
+
+    <createTable tableName="oauth_code">
+      <column name="code" type="varchar(255)"/>
+      <column name="authentication" type="MEDIUMBLOB"/>
+    </createTable>
+
+    <createTable tableName="oauth_approvals">
+      <column name="userId" type="varchar(255)"/>
+      <column name="clientId" type="varchar(255)"/>
+      <column name="scope" type="varchar(255)"/>
+      <column name="status" type="varchar(255)"/>
+      <column name="expiresAt" type="timestamp"/>
+      <column name="lastModifiedAt" type="timestamp"/>
+    </createTable>
+  </changeSet>
+</databaseChangeLog>

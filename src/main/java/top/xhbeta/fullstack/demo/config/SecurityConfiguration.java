@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
@@ -25,10 +26,11 @@ import top.xhbeta.fullstack.demo.security.jwt.JWTConfigurer;
 import top.xhbeta.fullstack.demo.security.jwt.TokenProvider;
 
 import javax.annotation.PostConstruct;
+import javax.net.ssl.HttpsURLConnection;
 
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -59,8 +61,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     try {
       authenticationManagerBuilder
         .inMemoryAuthentication()
-        .withUser("admin").password("admin").roles("ADMIN, USER")
-        .and().withUser("user").password("user").roles("USER");
+        .withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN", "USER")
+        .and().withUser("user").password(passwordEncoder().encode("user")).roles("USER");
 
       // AuthProvider
 //        .authenticationProvider(
@@ -68,8 +70,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        );
 
       // UserDetailService
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder());
+//       .userDetailsService(userDetailsService)
+//       .passwordEncoder(passwordEncoder());
     } catch (Exception e) {
       throw new BeanInitializationException("Security configuration failed", e);
     }
@@ -103,8 +105,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .antMatchers("/h2-console/**");
   }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
+  private void jwtConfigure(HttpSecurity http) throws Exception {
     http
         .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
         .exceptionHandling()
@@ -135,11 +136,34 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/swagger-ui/index.html").hasAuthority(ADMIN)
       .and()
         .apply(securityConfigurerAdapter());
+  }
 
+  private void oauthConfigure(HttpSecurity http) throws Exception {
+    http
+        .httpBasic().realmName("FullstackDemo App")
+      .and()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and()
+        .requestMatchers()
+        .antMatchers("/oauth/authorize")
+      .and()
+        .authorizeRequests()
+        .antMatchers("/oauth/authorize").authenticated();
+  }
 
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    oauthConfigure(http);
+//    jwtConfigure(http);
   }
 
   private JWTConfigurer securityConfigurerAdapter() {
     return new JWTConfigurer(tokenProvider);
+  }
+
+  @Bean
+  public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+    return new SecurityEvaluationContextExtension();
   }
 }

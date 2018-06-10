@@ -26,43 +26,43 @@ import java.sql.SQLException;
 @EnableTransactionManagement
 public class DatabaseConfiguration {
 
-    private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
+  private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
 
-    private final Environment env;
+  private final Environment env;
 
-    public DatabaseConfiguration(Environment env) {
-        this.env = env;
+  public DatabaseConfiguration(Environment env) {
+    this.env = env;
+  }
+
+  /**
+   * Open the TCP port for the H2 database, so it is available remotely.
+   *
+   * @return the H2 database TCP server
+   * @throws SQLException if the server failed to start
+   */
+  @Bean(initMethod = "start", destroyMethod = "stop")
+  @Profile(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT)
+  public Object h2TCPServer() throws SQLException {
+    return H2ConfigurationHelper.createServer();
+  }
+
+  @Bean
+  public SpringLiquibase liquibase(@Qualifier("taskExecutor") TaskExecutor taskExecutor,
+                                   DataSource dataSource, LiquibaseProperties liquibaseProperties) {
+
+    // Use liquibase.integration.spring.SpringLiquibase if you don't want Liquibase to start asynchronously
+    SpringLiquibase liquibase = new AsyncSpringLiquibase(taskExecutor, env);
+    liquibase.setDataSource(dataSource);
+    liquibase.setChangeLog("classpath:config/liquibase/master.xml");
+    liquibase.setContexts(liquibaseProperties.getContexts());
+    liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
+    liquibase.setDropFirst(liquibaseProperties.isDropFirst());
+    if (env.acceptsProfiles(JHipsterConstants.SPRING_PROFILE_NO_LIQUIBASE)) {
+      liquibase.setShouldRun(false);
+    } else {
+      liquibase.setShouldRun(liquibaseProperties.isEnabled());
+      log.debug("Configuring Liquibase");
     }
-
-    /**
-     * Open the TCP port for the H2 database, so it is available remotely.
-     *
-     * @return the H2 database TCP server
-     * @throws SQLException if the server failed to start
-     */
-    @Bean(initMethod = "start", destroyMethod = "stop")
-    @Profile(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT)
-    public Object h2TCPServer() throws SQLException {
-        return H2ConfigurationHelper.createServer();
-    }
-
-    @Bean
-    public SpringLiquibase liquibase(@Qualifier("taskExecutor") TaskExecutor taskExecutor,
-            DataSource dataSource, LiquibaseProperties liquibaseProperties) {
-
-        // Use liquibase.integration.spring.SpringLiquibase if you don't want Liquibase to start asynchronously
-        SpringLiquibase liquibase = new AsyncSpringLiquibase(taskExecutor, env);
-        liquibase.setDataSource(dataSource);
-        liquibase.setChangeLog("classpath:config/liquibase/master.xml");
-        liquibase.setContexts(liquibaseProperties.getContexts());
-        liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
-        liquibase.setDropFirst(liquibaseProperties.isDropFirst());
-        if (env.acceptsProfiles(JHipsterConstants.SPRING_PROFILE_NO_LIQUIBASE)) {
-            liquibase.setShouldRun(false);
-        } else {
-            liquibase.setShouldRun(liquibaseProperties.isEnabled());
-            log.debug("Configuring Liquibase");
-        }
-        return liquibase;
-    }
+    return liquibase;
+  }
 }

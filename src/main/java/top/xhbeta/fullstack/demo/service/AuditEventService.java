@@ -20,32 +20,32 @@ import java.util.Optional;
 @Transactional
 public class AuditEventService {
 
-    private final PersistenceAuditEventRepository persistenceAuditEventRepository;
+  private final PersistenceAuditEventRepository persistenceAuditEventRepository;
 
-    private final AuditEventConverter auditEventConverter;
+  private final AuditEventConverter auditEventConverter;
 
-    public AuditEventService(
-        PersistenceAuditEventRepository persistenceAuditEventRepository,
-        AuditEventConverter auditEventConverter) {
+  public AuditEventService(
+    PersistenceAuditEventRepository persistenceAuditEventRepository,
+    AuditEventConverter auditEventConverter) {
 
-        this.persistenceAuditEventRepository = persistenceAuditEventRepository;
-        this.auditEventConverter = auditEventConverter;
-    }
+    this.persistenceAuditEventRepository = persistenceAuditEventRepository;
+    this.auditEventConverter = auditEventConverter;
+  }
 
-    public Page<AuditEvent> findAll(Pageable pageable) {
-        return persistenceAuditEventRepository.findAll(pageable)
-            .map(auditEventConverter::convertToAuditEvent);
-    }
+  public Page<AuditEvent> findAll(Pageable pageable) {
+    return persistenceAuditEventRepository.findAll(pageable)
+      .map(auditEventConverter::convertToAuditEvent);
+  }
 
-    public Page<AuditEvent> findByDates(Instant fromDate, Instant toDate, Pageable pageable) {
-        return persistenceAuditEventRepository.findAllByAuditEventDateBetween(fromDate, toDate, pageable)
-            .map(auditEventConverter::convertToAuditEvent);
-    }
+  public Page<AuditEvent> findByDates(Instant fromDate, Instant toDate, Pageable pageable) {
+    return persistenceAuditEventRepository.findAllByAuditEventDateBetween(fromDate, toDate, pageable)
+      .map(auditEventConverter::convertToAuditEvent);
+  }
 
-    public Optional<AuditEvent> find(Long id) {
-        return Optional.ofNullable(persistenceAuditEventRepository.findById(id))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .map(auditEventConverter::convertToAuditEvent);
-    }
+  public Optional<AuditEvent> find(Long id) {
+    return Optional.ofNullable(persistenceAuditEventRepository.findById(id))
+      .filter(Optional::isPresent)
+      .map(Optional::get)
+      .map(auditEventConverter::convertToAuditEvent);
+  }
 }

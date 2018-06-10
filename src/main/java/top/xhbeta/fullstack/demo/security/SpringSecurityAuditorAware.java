@@ -11,10 +11,10 @@ import java.util.Optional;
 @Component
 public class SpringSecurityAuditorAware implements AuditorAware<String> {
 
-    private static final String SYSTEM_ACCOUNT = "system";
+  private static final String SYSTEM_ACCOUNT = "system";
 
-    @Override
-    public Optional<String> getCurrentAuditor() {
-        return Optional.of(SecurityUtils.getCurrentUserLogin().orElse(SYSTEM_ACCOUNT));
-    }
+  @Override
+  public Optional<String> getCurrentAuditor() {
+    return Optional.of(SecurityUtils.getCurrentUserLogin().orElse(SYSTEM_ACCOUNT));
+  }
 }

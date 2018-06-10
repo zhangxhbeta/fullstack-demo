@@ -20,33 +20,33 @@ public class OAuthAuthenticationProvider implements AuthenticationProvider {
 
 //  private final UserOperator userOperator;
 
-    private final PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
-    public OAuthAuthenticationProvider(/*UserOperator userOperator,*/ PasswordEncoder passwordEncoder) {
+  public OAuthAuthenticationProvider(/*UserOperator userOperator,*/ PasswordEncoder passwordEncoder) {
 //    this.userOperator = userOperator;
-        this.passwordEncoder = passwordEncoder;
+    this.passwordEncoder = passwordEncoder;
+  }
+
+  @Override
+  public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+    HttpServletRequest request = attributes.getRequest();
+
+    String authorization = request.getHeader("Authorization");
+    if (!authorization.startsWith("Basic") || authorization.length() < 6) {
+      return null;
     }
 
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-
-        String authorization = request.getHeader("Authorization");
-        if (!authorization.startsWith("Basic") || authorization.length() < 6) {
-            return null;
-        }
-
-        String str = authorization.substring(6);
-        byte[] b = Base64.getDecoder().decode(str);
-        String auth = new String(b);
-        String client = auth.substring(0, auth.indexOf(':'));
+    String str = authorization.substring(6);
+    byte[] b = Base64.getDecoder().decode(str);
+    String auth = new String(b);
+    String client = auth.substring(0, auth.indexOf(':'));
 
 
-        // 读取用户
-        String openId = request.getParameter("open_id");
-        String name = authentication.getName();
-        Object password = authentication.getCredentials();
+    // 读取用户
+    String openId = request.getParameter("open_id");
+    String name = authentication.getName();
+    Object password = authentication.getCredentials();
 
     /*
     User user = null;
@@ -103,11 +103,11 @@ public class OAuthAuthenticationProvider implements AuthenticationProvider {
     }
     */
 
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
-    }
+  @Override
+  public boolean supports(Class<?> authentication) {
+    return authentication.equals(UsernamePasswordAuthenticationToken.class);
+  }
 }
