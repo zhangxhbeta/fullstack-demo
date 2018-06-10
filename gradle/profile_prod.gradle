@@ -20,11 +20,11 @@ bootRun {
 }
 
 task webpack_test(type: NpmTask, dependsOn: 'npm_install') {
-    args = ["run", "webpack:test"]
+    args = ["run", "test:ci"]
 }
 
 task webpack(type: NpmTask, dependsOn: 'npm_install') {
-    args = ["run", "webpack:prod"]
+    args = ["run", "build"]
 }
 
 war {

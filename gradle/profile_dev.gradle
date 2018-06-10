@@ -18,7 +18,7 @@ bootRun {
 }
 
 task webpackBuildDev(type: NpmTask) {
-    args = ["run", "webpack:build"]
+    args = ["run", "build"]
 }
 
 war {
@@ -35,6 +35,9 @@ processResources {
         }
     }
 }
+
+//println "property webpack: " + project.hasProperty('webpack')
+//println "property no-liquibase: " + project.hasProperty('no-liquibase')
 
 processResources.dependsOn webpackBuildDev
 webpackBuildDev.onlyIf { project.hasProperty('webpack') }
