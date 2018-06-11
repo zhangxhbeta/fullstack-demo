@@ -37,12 +37,19 @@ subprojects { subproject ->
 
     if (subproject.name.startsWith("fullstack")) {
 
+        apply plugin: 'net.ltgt.apt-eclipse'
+        apply plugin: 'net.ltgt.apt-idea'
+        apply plugin: 'net.ltgt.apt'
+
         apply plugin: 'org.springframework.boot'
         apply plugin: 'war'
         apply plugin: 'propdeps'
         apply plugin: 'com.moowork.node'
         apply plugin: 'io.spring.dependency-management'
         apply plugin: 'org.sonarqube'
+
+
+
 
         dependencyManagement {
             imports {
