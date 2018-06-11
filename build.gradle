@@ -34,29 +34,6 @@ subprojects { subproject ->
     apply plugin: 'maven'
     apply plugin: 'idea'
 
-    if (OperatingSystem.current().isWindows()) {
-        // https://stackoverflow.com/questions/40037487/the-filename-or-extension-is-too-long-error-using-gradle
-        task classpathJar(type: Jar) {
-            dependsOn configurations.runtime
-            appendix = 'classpath'
-
-            doFirst {
-                manifest {
-                    attributes 'Class-Path': configurations.runtime.files.collect {
-                        it.toURI().toURL().toString().replaceFirst(/file:\/+/, '/').replaceAll(' ', '%20')
-                    }.join(' ')
-                }
-            }
-        }
-
-        bootRun {
-            dependsOn classpathJar
-            doFirst {
-                classpath = files("$buildDir/classes/java/main", "$buildDir/resources/main", classpathJar.archivePath)
-            }
-        }
-    }
-
     if (subproject.name.startsWith("fullstack")) {
 
         apply plugin: 'org.springframework.boot'
@@ -74,6 +51,29 @@ subprojects { subproject ->
 
         springBoot {
             buildInfo()
+        }
+
+        if (OperatingSystem.current().isWindows()) {
+            // https://stackoverflow.com/questions/40037487/the-filename-or-extension-is-too-long-error-using-gradle
+            task classpathJar(type: Jar) {
+                dependsOn configurations.runtime
+                appendix = 'classpath'
+
+                doFirst {
+                    manifest {
+                        attributes 'Class-Path': configurations.runtime.files.collect {
+                            it.toURI().toURL().toString().replaceFirst(/file:\/+/, '/').replaceAll(' ', '%20')
+                        }.join(' ')
+                    }
+                }
+            }
+
+            bootRun {
+                dependsOn classpathJar
+                doFirst {
+                    classpath = files("$buildDir/classes/java/main", "$buildDir/resources/main", classpathJar.archivePath)
+                }
+            }
         }
 
         apply from: '../gradle/docker.gradle'
