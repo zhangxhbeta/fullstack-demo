@@ -6,7 +6,7 @@ import com.codahale.metrics.annotation.Timed;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import top.xhbeta.fullstack.demo.web.rest.vm.LoggerVM;
+import top.xhbeta.fullstack.scaffold.web.vm.LoggerVM;
 
 import java.util.List;
 import java.util.stream.Collectors;

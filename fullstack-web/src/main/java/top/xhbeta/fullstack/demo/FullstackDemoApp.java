@@ -5,9 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import top.xhbeta.fullstack.demo.config.ApplicationProperties;
 import top.xhbeta.fullstack.demo.config.DefaultProfileUtil;
 
@@ -17,6 +20,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @SpringBootApplication
+@ComponentScan({"top.xhbeta.fullstack.scaffold", "top.xhbeta.fullstack.demo"})
+@EnableJpaRepositories({"top.xhbeta.fullstack.demo.repository", "top.xhbeta.fullstack.scaffold.repository"})
+@EntityScan({"top.xhbeta.fullstack.demo.domain", "top.xhbeta.fullstack.scaffold.domain"})
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 public class FullstackDemoApp {
 

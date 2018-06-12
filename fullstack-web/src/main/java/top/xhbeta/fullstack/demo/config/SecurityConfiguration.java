@@ -1,5 +1,6 @@
 package top.xhbeta.fullstack.demo.config;
 
+import io.github.jhipster.config.JHipsterProperties;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
@@ -22,11 +22,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 import top.xhbeta.fullstack.demo.security.OAuthAuthenticationProvider;
-import top.xhbeta.fullstack.demo.security.jwt.JWTConfigurer;
-import top.xhbeta.fullstack.demo.security.jwt.TokenProvider;
+import top.xhbeta.fullstack.scaffold.security.jwt.JWTConfigurer;
+import top.xhbeta.fullstack.scaffold.security.jwt.TokenProvider;
 
 import javax.annotation.PostConstruct;
-import javax.net.ssl.HttpsURLConnection;
 
 
 @Configuration
@@ -41,19 +40,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 //    private final UserDetailsService userDetailsService;
 
-  private final TokenProvider tokenProvider;
-
   private final CorsFilter corsFilter;
 
   private final SecurityProblemSupport problemSupport;
 
+  private final JHipsterProperties jHipsterProperties;
+
   public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, /*UserDetailsService userDetailsService,*/
-                               TokenProvider tokenProvider, CorsFilter corsFilter, SecurityProblemSupport problemSupport) {
+                               CorsFilter corsFilter, SecurityProblemSupport problemSupport, JHipsterProperties jHipsterProperties) {
     this.authenticationManagerBuilder = authenticationManagerBuilder;
 //        this.userDetailsService = userDetailsService;
-    this.tokenProvider = tokenProvider;
     this.corsFilter = corsFilter;
     this.problemSupport = problemSupport;
+    this.jHipsterProperties = jHipsterProperties;
   }
 
   @PostConstruct
@@ -107,49 +106,49 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private void jwtConfigure(HttpSecurity http) throws Exception {
     http
-        .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-        .exceptionHandling()
-        .authenticationEntryPoint(problemSupport)
-        .accessDeniedHandler(problemSupport)
+      .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+      .exceptionHandling()
+      .authenticationEntryPoint(problemSupport)
+      .accessDeniedHandler(problemSupport)
       .and()
-        .csrf()
-        .disable()
-        .headers()
-        .frameOptions()
-        .disable()
+      .csrf()
+      .disable()
+      .headers()
+      .frameOptions()
+      .disable()
       .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
-        .authorizeRequests()
-        .antMatchers("/api/register").permitAll()
-        .antMatchers("/api/activate").permitAll()
-        .antMatchers("/api/authenticate").permitAll()
-        .antMatchers("/api/account/reset-password/init").permitAll()
-        .antMatchers("/api/account/reset-password/finish").permitAll()
-        .antMatchers("/api/**").authenticated()
-        .antMatchers("/management/health").permitAll()
-        .antMatchers("/management/info").permitAll()
-        .antMatchers("/management/**").hasAuthority(ADMIN)
-        .antMatchers("/v2/api-docs/**").permitAll()
-        .antMatchers("/swagger-resources/configuration/ui").permitAll()
-        .antMatchers("/swagger-ui/index.html").hasAuthority(ADMIN)
+      .authorizeRequests()
+      .antMatchers("/api/register").permitAll()
+      .antMatchers("/api/activate").permitAll()
+      .antMatchers("/api/authenticate").permitAll()
+      .antMatchers("/api/account/reset-password/init").permitAll()
+      .antMatchers("/api/account/reset-password/finish").permitAll()
+      .antMatchers("/api/**").authenticated()
+      .antMatchers("/management/health").permitAll()
+      .antMatchers("/management/info").permitAll()
+      .antMatchers("/management/**").hasAuthority(ADMIN)
+      .antMatchers("/v2/api-docs/**").permitAll()
+      .antMatchers("/swagger-resources/configuration/ui").permitAll()
+      .antMatchers("/swagger-ui/index.html").hasAuthority(ADMIN)
       .and()
-        .apply(securityConfigurerAdapter());
+      .apply(securityConfigurerAdapter());
   }
 
   private void oauthConfigure(HttpSecurity http) throws Exception {
     http
-        .httpBasic().realmName("FullstackDemo App")
+      .httpBasic().realmName("FullstackDemo App")
       .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
-        .requestMatchers()
-        .antMatchers("/oauth/authorize")
+      .requestMatchers()
+      .antMatchers("/oauth/authorize")
       .and()
-        .authorizeRequests()
-        .antMatchers("/oauth/authorize").authenticated();
+      .authorizeRequests()
+      .antMatchers("/oauth/authorize").authenticated();
   }
 
   @Override
@@ -159,7 +158,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   private JWTConfigurer securityConfigurerAdapter() {
-    return new JWTConfigurer(tokenProvider);
+    return new JWTConfigurer(tokenProvider());
+  }
+
+  @Bean
+  public TokenProvider tokenProvider() {
+    return new TokenProvider(jHipsterProperties.getSecurity().getAuthentication().getJwt().getSecret(),
+      jHipsterProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSeconds(),
+      jHipsterProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSecondsForRememberMe());
   }
 
   @Bean

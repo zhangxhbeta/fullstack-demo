@@ -7,8 +7,9 @@ import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import top.xhbeta.fullstack.demo.config.audit.AuditEventConverter;
-import top.xhbeta.fullstack.demo.domain.PersistentAuditEvent;
+import top.xhbeta.fullstack.scaffold.domain.PersistentAuditEvent;
+import top.xhbeta.fullstack.scaffold.repository.PersistenceAuditEventRepository;
+import top.xhbeta.fullstack.scaffold.support.audit.AuditEventConverter;
 
 import java.time.Instant;
 import java.util.HashMap;

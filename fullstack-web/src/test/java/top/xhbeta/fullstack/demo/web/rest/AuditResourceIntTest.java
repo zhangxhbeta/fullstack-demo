@@ -15,10 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import top.xhbeta.fullstack.demo.FullstackDemoApp;
-import top.xhbeta.fullstack.demo.config.audit.AuditEventConverter;
-import top.xhbeta.fullstack.demo.domain.PersistentAuditEvent;
-import top.xhbeta.fullstack.demo.repository.PersistenceAuditEventRepository;
-import top.xhbeta.fullstack.demo.service.AuditEventService;
+import top.xhbeta.fullstack.scaffold.domain.PersistentAuditEvent;
+import top.xhbeta.fullstack.scaffold.repository.PersistenceAuditEventRepository;
+import top.xhbeta.fullstack.scaffold.service.AuditEventService;
+import top.xhbeta.fullstack.scaffold.support.audit.AuditEventConverter;
 
 import java.time.Instant;
 

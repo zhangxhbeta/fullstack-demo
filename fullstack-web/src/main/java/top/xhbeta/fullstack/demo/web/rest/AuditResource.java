@@ -8,8 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import top.xhbeta.fullstack.demo.service.AuditEventService;
-import top.xhbeta.fullstack.demo.web.rest.util.PaginationUtil;
+import top.xhbeta.fullstack.scaffold.service.AuditEventService;
+import top.xhbeta.fullstack.scaffold.web.util.PaginationUtil;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
