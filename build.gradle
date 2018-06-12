@@ -38,6 +38,7 @@ subprojects { subproject ->
     apply plugin: 'net.ltgt.apt-idea'
     apply plugin: 'net.ltgt.apt'
     apply plugin: 'org.sonarqube'
+    apply plugin: 'io.spring.dependency-management'
 
     test {
         exclude '**/CucumberTest*'
@@ -65,18 +66,17 @@ subprojects { subproject ->
         gradleVersion = '4.6'
     }
 
+    dependencyManagement {
+        imports {
+            mavenBom 'io.github.jhipster:jhipster-dependencies:' + jhipster_dependencies_version
+        }
+    }
+
     // Configuration for spring-boot
     if (subproject.name.startsWith("fullstack")) {
         apply plugin: 'org.springframework.boot'
         apply plugin: 'war'
         apply plugin: 'com.moowork.node'
-        apply plugin: 'io.spring.dependency-management'
-
-        dependencyManagement {
-            imports {
-                mavenBom 'io.github.jhipster:jhipster-dependencies:' + jhipster_dependencies_version
-            }
-        }
 
         springBoot {
             buildInfo()
