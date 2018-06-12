@@ -3,7 +3,6 @@ import org.gradle.internal.os.OperatingSystem
 buildscript {
     repositories {
         mavenLocal()
-        maven { url "http://maven.aliyun.com/nexus/content/repositories/gradle-plugin/" }
         jcenter()
         maven { url "http://repo.spring.io/plugins-release" }
         maven { url "https://plugins.gradle.org/m2/" }
@@ -34,22 +33,44 @@ subprojects { subproject ->
 
     apply plugin: 'maven'
     apply plugin: 'idea'
+    apply plugin: 'propdeps'
+    apply plugin: 'net.ltgt.apt-eclipse'
+    apply plugin: 'net.ltgt.apt-idea'
+    apply plugin: 'net.ltgt.apt'
+    apply plugin: 'org.sonarqube'
 
+    test {
+        exclude '**/CucumberTest*'
+
+        // uncomment if the tests reports are not generated
+        // see https://github.com/jhipster/generator-jhipster/pull/2771 and https://github.com/jhipster/generator-jhipster/pull/4484
+        // ignoreFailures true
+        reports.html.enabled = false
+    }
+
+    task testReport(type: TestReport) {
+        destinationDir = file("$buildDir/reports/tests")
+        reportOn test
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        jcenter()
+        // TODO To remove after final Spring Boot 2 release
+        maven { url "https://repo.spring.io/milestone" }
+    }
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '4.6'
+    }
+
+    // Configuration for spring-boot
     if (subproject.name.startsWith("fullstack")) {
-
-        apply plugin: 'net.ltgt.apt-eclipse'
-        apply plugin: 'net.ltgt.apt-idea'
-        apply plugin: 'net.ltgt.apt'
-
         apply plugin: 'org.springframework.boot'
         apply plugin: 'war'
-        apply plugin: 'propdeps'
         apply plugin: 'com.moowork.node'
         apply plugin: 'io.spring.dependency-management'
-        apply plugin: 'org.sonarqube'
-
-
-
 
         dependencyManagement {
             imports {
@@ -122,33 +143,6 @@ subprojects { subproject ->
         compileJava.dependsOn processResources
         processResources.dependsOn cleanResources, bootBuildInfo
         bootBuildInfo.mustRunAfter cleanResources
-
-    }
-
-    test {
-        exclude '**/CucumberTest*'
-
-        // uncomment if the tests reports are not generated
-        // see https://github.com/jhipster/generator-jhipster/pull/2771 and https://github.com/jhipster/generator-jhipster/pull/4484
-        // ignoreFailures true
-        reports.html.enabled = false
-    }
-
-    task testReport(type: TestReport) {
-        destinationDir = file("$buildDir/reports/tests")
-        reportOn test
-    }
-
-    repositories {
-        mavenLocal()
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-        jcenter { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter/' }
-        // TODO To remove after final Spring Boot 2 release
-        maven { url "https://repo.spring.io/milestone" }
-    }
-
-    task wrapper(type: Wrapper) {
-        gradleVersion = '4.6'
     }
 
 }

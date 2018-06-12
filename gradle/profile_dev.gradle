@@ -36,8 +36,5 @@ processResources {
     }
 }
 
-//println "property webpack: " + project.hasProperty('webpack')
-//println "property no-liquibase: " + project.hasProperty('no-liquibase')
-
 processResources.dependsOn webpackBuildDev
 webpackBuildDev.onlyIf { project.hasProperty('webpack') }
