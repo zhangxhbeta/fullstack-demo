@@ -73,7 +73,7 @@ subprojects { subproject ->
     }
 
     // Configuration for spring-boot
-    if (subproject.name.startsWith("fullstack")) {
+    if (subproject.name.endsWith("-web")) {
         apply plugin: 'org.springframework.boot'
         apply plugin: 'war'
         apply plugin: 'com.moowork.node'
