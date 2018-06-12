@@ -1,6 +1,6 @@
 # Fullstack demo
 
-A scaffold combine jHipstet and AntD
+A scaffold combine SpringBoot and AntD, inspiration by jHipster
 
 
 ## 快速开始
