@@ -25,8 +25,8 @@ public class User implements Serializable {
   @Column(name = "user_birthday")
   private Date birthday;
 
-  @OneToOne
-  @JoinColumn(name = "classId")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "classroom_id")
   private Classroom classroom;
 
   public Long getId() {

@@ -13,9 +13,15 @@ public class Classroom implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "classroom_id")
   private Long id;
+
   @Column(name = "classroom_name")
   private String name;
-  @OneToMany(mappedBy = "classroom")
+
+  @OneToMany(
+    mappedBy = "classroom",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private List<User> users;
 
   public Long getId() {

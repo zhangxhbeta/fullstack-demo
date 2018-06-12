@@ -1,0 +1,25 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="zhangxh (generated)" id="1528808550517-1">
+        <createTable tableName="lsw_classroom">
+            <column autoIncrement="true" name="classroom_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lsw_classroomPK"/>
+            </column>
+            <column name="classroom_name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="zhangxh (generated)" id="1528808550517-2">
+        <createTable tableName="lsw_users">
+            <column autoIncrement="true" name="user_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lsw_usersPK"/>
+            </column>
+            <column name="user_age" type="INT"/>
+            <column name="user_birthday" type="TIMESTAMP"/>
+            <column name="user_name" type="VARCHAR(255)"/>
+            <column name="classroom_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="zhangxh (generated)" id="1528808550517-3">
+        <addForeignKeyConstraint baseColumnNames="classroom_id" baseTableName="lsw_users" constraintName="FKfvrasfbcv34k6hlqardlo71eh" deferrable="false" initiallyDeferred="false" referencedColumnNames="classroom_id" referencedTableName="lsw_classroom"/>
+    </changeSet>
+</databaseChangeLog>
