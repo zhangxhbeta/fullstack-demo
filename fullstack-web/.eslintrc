@@ -1,0 +1,24 @@
+{
+  "extends": "react-app",
+  "globals": {
+    "IMAP": true
+  },
+  "rules": {
+    "semi": [
+      "error",
+      "never"
+    ],
+    "no-unexpected-multiline": "error",
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "camelcase": [
+      "error",
+      {
+        "properties": "never"
+      }
+    ],
+    "no-debugger": "error"
+  }
+}

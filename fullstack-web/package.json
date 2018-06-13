@@ -5,9 +5,10 @@
   "dependencies": {
     "ajv": "^6.5.1",
     "antd": "^3.6.1",
+    "mockjs": "^1.0.1-beta3",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "react-scripts-fs": "git+https://gitee.com/zhangxhbeta/react-scripts-fs.git",
+    "react-router-dom": "^4.3.1",
     "swagger-ui": "2.2.10"
   },
   "scripts": {
@@ -22,6 +23,9 @@
     "copy-webpack-plugin": "^4.5.1",
     "cross-env": "^5.1.3",
     "react-app-rewire-less": "^2.1.1",
-    "react-app-rewired": "^1.5.2"
+    "react-app-rewired": "^1.5.2",
+    "react-hot-loader": "^4.3.1",
+    "react-scripts": "^1.1.4",
+    "react-scripts-fs": "git+https://gitee.com/zhangxhbeta/react-scripts-fs.git"
   }
 }

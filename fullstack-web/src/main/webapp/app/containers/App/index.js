@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import 'antd/dist/antd.less';
-import './App.css';
-import { Button } from 'antd';
+import React, { Component } from 'react'
+import logo from './logo.svg'
+import './App.css'
+import { Button } from 'antd'
 
 class App extends Component {
   render() {
@@ -13,12 +12,12 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          试试编辑 <code>src/main/webapp/app/containers/App/index.js</code> 然后保存，看看我们的热替换技术吧.
         </p>
         <Button type="primary">Button</Button>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
