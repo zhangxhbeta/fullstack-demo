@@ -1,20 +1,28 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom'
-import { hot } from 'react-hot-loader'
-import registerServiceWorker from './registerServiceWorker'
+import 'url-polyfill'
+import dva from 'dva'
 
-import 'antd/dist/antd.less'
-import './index.css'
+import createHistory from 'history/createHashHistory'
+// user BrowserHistory
+// import createHistory from 'history/createBrowserHistory';
+import createLoading from 'dva-loading'
+import 'moment/locale/zh-cn'
 
-import App from './containers/App'
+import './index.less'
+// 1. Initialize
+const app = dva({
+  history: createHistory(),
+})
 
-// 引入 mock
-// if (process.env.NODE_ENV === 'development') {
-//   require('./api/mocks').default.bootstrap()
-// }
+// 2. Plugins
+app.use(createLoading())
 
-let HotApp = hot(module)(App)
+// 3. Register global model
+app.model(require('./models/global').default)
 
-ReactDOM.render(<HotApp />, document.getElementById('root'))
-registerServiceWorker()
+// 4. Router
+app.router(require('./router').default)
+
+// 5. Start
+app.start('#root')
+
+export default app._store; // eslint-disable-line
