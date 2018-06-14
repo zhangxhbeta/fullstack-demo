@@ -84,7 +84,7 @@ class Pie extends Component {
         legendBlock: false,
       })
     }
-  }, 300))
+  }, 300), this)
 
   handleRoot = n => {
     this.root = n

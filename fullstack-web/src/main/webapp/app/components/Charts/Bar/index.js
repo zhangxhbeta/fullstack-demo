@@ -41,7 +41,7 @@ class Bar extends Component {
         autoHideXLabels: false,
       })
     }
-  }, 400))
+  }, 400), this)
 
   handleRoot = n => {
     this.root = n

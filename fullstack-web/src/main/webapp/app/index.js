@@ -9,6 +9,12 @@ import 'moment/locale/zh-cn'
 
 import './index.less'
 
+import setup from './api/setup'
+setup(true)
+if (process.env.NODE_ENV === 'development') {
+  require('./api/mocks').default.bootstrap(10)
+}
+
 // 1. Initialize
 const app = dva({
   history: createHistory(),

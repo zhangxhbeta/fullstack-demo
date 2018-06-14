@@ -217,7 +217,7 @@ class AdvancedProfile extends Component {
           stepDirection: 'horizontal',
         })
       }
-    }, 200))
+    }, 200), this)
 
   render() {
     const { stepDirection } = this.state

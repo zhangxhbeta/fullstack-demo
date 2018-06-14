@@ -1,4 +1,5 @@
-import fetch from 'dva/fetch'
+// import fetch from 'dva/fetch'
+import axios from 'axios'
 import { notification } from 'antd'
 import { routerRedux } from 'dva/router'
 import store from '../index'
@@ -42,55 +43,30 @@ function checkStatus(response) {
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  */
-export default function request(url, options) {
-  const defaultOptions = {
-    credentials: 'include',
-  }
-  const newOptions = { ...defaultOptions, ...options }
-  if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
-    if (!(newOptions.body instanceof FormData)) {
-      newOptions.headers = {
+export default function request(url, options = {}) {
+  if (options.method === 'POST' || options.method === 'PUT') {
+    if (!(options.body instanceof FormData)) {
+      options.headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json; charset=utf-8',
-        ...newOptions.headers,
+        ...options.headers,
       }
-      newOptions.body = JSON.stringify(newOptions.body)
+      options.body = JSON.stringify(options.body)
     } else {
-      // newOptions.body is FormData
-      newOptions.headers = {
+      // options.body is FormData
+      options.headers = {
         Accept: 'application/json',
-        ...newOptions.headers,
+        ...options.headers,
       }
     }
   }
 
-  return fetch(url, newOptions)
-    .then(checkStatus)
-    .then(response => {
-      if (newOptions.method === 'DELETE' || response.status === 204) {
-        return response.text()
-      }
-      return response.json()
-    })
-    .catch(e => {
-      const { dispatch } = store
-      const status = e.name
-      if (status === 401) {
-        dispatch({
-          type: 'login/logout',
-        })
-        return
-      }
-      if (status === 403) {
-        dispatch(routerRedux.push('/exception/403'))
-        return
-      }
-      if (status <= 504 && status >= 500) {
-        dispatch(routerRedux.push('/exception/500'))
-        return
-      }
-      if (status >= 404 && status < 422) {
-        dispatch(routerRedux.push('/exception/404'))
-      }
-    })
+  return axios({
+    url: url,
+    method: options.method ? options.method.toLowerCase() : 'get',
+    data: options.body,
+  })
+  .then(response => {
+    return response.data
+  })
 }

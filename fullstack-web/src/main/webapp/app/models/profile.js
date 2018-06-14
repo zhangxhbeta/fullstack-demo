@@ -1,4 +1,4 @@
-import { queryBasicProfile, queryAdvancedProfile } from '../services/api'
+import { queryBasicProfile, queryAdvancedProfile } from '../api/api'
 
 export default {
   namespace: 'profile',

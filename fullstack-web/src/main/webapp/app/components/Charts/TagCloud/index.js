@@ -126,7 +126,7 @@ class TagCloud extends Component {
     } else {
       onload()
     }
-  }, 500))
+  }, 500), this)
 
   render() {
     const { className, height } = this.props
