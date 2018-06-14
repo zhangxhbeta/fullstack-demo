@@ -19,4 +19,5 @@ dependencies {
     testCompile "org.mockito:mockito-core"
     testCompile "org.assertj:assertj-core"
     testCompile "junit:junit"
+    testCompile "com.h2database:h2"
 }

@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see LogsResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = FullstackDemoApp.class)
+@SpringBootTest
 public class LogsResourceIntTest {
 
     private MockMvc restLogsMockMvc;
