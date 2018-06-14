@@ -18,7 +18,7 @@ import java.util.List;
 public class ClassroomResource {
   private final ClassroomService classroomService;
 
-  private ClassroomResource(ClassroomService classroomService) {
+  public ClassroomResource(ClassroomService classroomService) {
     this.classroomService = classroomService;
   }
 
@@ -29,12 +29,13 @@ public class ClassroomResource {
     List<Classroom> classroomList = classroomService.findAll(name);
     return new ResponseEntity<>(classroomList, HttpStatus.OK);
   }
-  @GetMapping(path = "/all",params = {"name"})
+
+  @GetMapping(path = "/all", params = {"name"})
   public ResponseEntity<List<Classroom>> getAll(
     @RequestParam(value = "name") String name,
     Pageable pageable) {
 
-    Page<Classroom> page = classroomService.findAll(name,  pageable);
+    Page<Classroom> page = classroomService.findAll(name, pageable);
     HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/management/classroom");
     return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
   }
@@ -53,6 +54,7 @@ public class ClassroomResource {
     HttpHeaders headers = HeaderUtil.createEntityCreationAlert("classroom", "/management/users/update");
     return new ResponseEntity<>(classroom, headers, HttpStatus.OK);
   }
+
   @PostMapping(path = "/update/{id:.+}", params = {"name", "age", "classId"})
   public ResponseEntity<Classroom> saveClassroom(
     @PathVariable Long id,
