@@ -104,4 +104,4 @@ class MiniArea extends React.Component {
   }
 }
 
-export default autoHeight(MiniArea)
+export default autoHeight()(MiniArea)

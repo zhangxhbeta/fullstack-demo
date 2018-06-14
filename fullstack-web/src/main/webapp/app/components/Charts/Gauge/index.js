@@ -165,4 +165,4 @@ class Gauge extends React.Component {
   }
 }
 
-export default autoHeight(Gauge)
+export default autoHeight()(Gauge)

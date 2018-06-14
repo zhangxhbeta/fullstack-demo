@@ -158,4 +158,4 @@ class TagCloud extends Component {
   }
 }
 
-export default autoHeight(TagCloud)
+export default autoHeight()(TagCloud)

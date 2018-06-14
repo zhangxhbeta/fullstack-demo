@@ -178,4 +178,4 @@ class Radar extends Component {
   }
 }
 
-export default autoHeight(Radar)
+export default autoHeight()(Radar)

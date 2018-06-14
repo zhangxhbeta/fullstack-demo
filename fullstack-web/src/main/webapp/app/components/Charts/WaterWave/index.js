@@ -195,4 +195,4 @@ class WaterWave extends PureComponent {
   }
 }
 
-export default autoHeight(WaterWave)
+export default autoHeight()(WaterWave)

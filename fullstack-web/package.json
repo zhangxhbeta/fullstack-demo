@@ -47,5 +47,6 @@
     "react-hot-loader": "^4.3.1",
     "react-scripts": "^1.1.4",
     "react-scripts-fs": "git+https://gitee.com/zhangxhbeta/react-scripts-fs.git"
-  }
+  },
+  "proxy": "http://localhost:8080"
 }

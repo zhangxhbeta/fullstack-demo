@@ -121,4 +121,4 @@ class TimelineChart extends React.Component {
   }
 }
 
-export default autoHeight(TimelineChart)
+export default autoHeight()(TimelineChart)

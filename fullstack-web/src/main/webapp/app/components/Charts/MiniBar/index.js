@@ -48,4 +48,4 @@ class MiniBar extends React.Component {
   }
 }
 
-export default autoHeight(MiniBar)
+export default autoHeight()(MiniBar)

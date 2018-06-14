@@ -107,4 +107,4 @@ class Bar extends Component {
   }
 }
 
-export default autoHeight(Bar)
+export default autoHeight()(Bar)

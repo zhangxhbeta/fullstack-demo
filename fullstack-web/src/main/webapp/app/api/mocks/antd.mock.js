@@ -42,7 +42,7 @@ export default {
       },
     ])
 
-    mock.onGet('/api/project/notice').reply(200, getNotices)
+    mock.onGet('/api/project/notice').reply(200, getNotice)
     mock.onGet('/api/activities').reply(200, getActivities)
 
   mock.onGet(/\/api\/rule[^/]*/).reply(config => {
@@ -104,8 +104,34 @@ export default {
 
     mock.onPost('/api/register').reply(200, { status: 'ok', currentAuthority: 'user' })
 
-    // mock.onGet('').reply(200, getNotices)
-    // mock.onGet('').reply(200, getNotices)
-    // mock.onGet('').reply(200, getNotices)
+    mock.onGet('/api/notices').reply(200, getNotices)
+    mock.onGet('/api/500').reply(500, {
+      timestamp: 1513932555104,
+      status: 500,
+      error: 'error',
+      message: 'error',
+      path: '/base/category/list',
+    })
+    mock.onGet('/api/404').reply(404, {
+      timestamp: 1513932643431,
+      status: 404,
+      error: 'Not Found',
+      message: 'No message available',
+      path: '/base/category/list/2121212',
+    })
+    mock.onGet('/api/403').reply(403, {
+      timestamp: 1513932555104,
+      status: 403,
+      error: 'Unauthorized',
+      message: 'Unauthorized',
+      path: '/base/category/list',
+    })
+    mock.onGet('/api/401').reply(401, {
+      timestamp: 1513932555104,
+      status: 401,
+      error: 'Unauthorized',
+      message: 'Unauthorized',
+      path: '/base/category/list',
+    })
   }
 }

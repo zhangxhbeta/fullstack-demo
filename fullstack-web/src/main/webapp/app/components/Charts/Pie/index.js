@@ -67,7 +67,7 @@ class Pie extends Component {
   };
 
   // for window resize auto responsive legend
-  resize = bind(debounce(() => {
+  resize = debounce(() => {
     const { hasLegend } = this.props
     if (!hasLegend || !this.root) {
       window.removeEventListener('resize', this.resize)
@@ -84,7 +84,7 @@ class Pie extends Component {
         legendBlock: false,
       })
     }
-  }, 300), this)
+  }, 300)
 
   handleRoot = n => {
     this.root = n
@@ -251,4 +251,4 @@ class Pie extends Component {
   }
 }
 
-export default autoHeight(Pie)
+export default autoHeight()(Pie)
