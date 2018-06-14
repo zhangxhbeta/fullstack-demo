@@ -23,6 +23,7 @@ configurations {
 
 dependencies {
     compile project(":scaffold")
+    compile project(":fullstack")
 
     // Use ", version: jhipster_dependencies_version, changing: true" if you want
     // to use a SNAPSHOT release instead of a stable release

@@ -9,6 +9,15 @@ import java.util.List;
 public class Classroom implements Serializable {
   private static final long serialVersionUID = 1L;
 
+  public Classroom(String name,Integer state) {
+    this.setName(name);
+    this.setState(state);
+  }
+
+  public Classroom(Long id, String name){
+    this.setId(id);
+    this.setName(name);
+  }
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "classroom_id")
@@ -16,6 +25,10 @@ public class Classroom implements Serializable {
 
   @Column(name = "classroom_name")
   private String name;
+
+  @Column(name = "state")
+  private Integer state;
+
 
   @OneToMany(
     mappedBy = "classroom",
@@ -46,5 +59,13 @@ public class Classroom implements Serializable {
 
   public void setUsers(List<User> users) {
     this.users = users;
+  }
+
+  public Integer getState() {
+    return state;
+  }
+
+  public void setState(Integer state) {
+    this.state = state;
   }
 }
