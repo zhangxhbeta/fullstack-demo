@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import _ from 'lodash'
+import bind from 'lodash/bind'
+import debounce from 'lodash/debounce'
 import { connect } from 'dva'
 import {
   Button,
@@ -204,7 +205,7 @@ class AdvancedProfile extends Component {
     this.setState({ operationkey: key })
   };
 
-  setStepDirection = _.bind(_.debounce(() => {
+  setStepDirection = bind(debounce(() => {
       const { stepDirection } = this.state
       const w = getWindowWidth()
       if (stepDirection !== 'vertical' && w <= 576) {

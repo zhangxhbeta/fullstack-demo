@@ -3,6 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const cloneDeep = require('lodash/cloneDeep')
 const path = require('path')
 const { getLoader, loaderNameMatches } = require('react-app-rewired')
+const rewireLess = require('react-app-rewire-less')
 
 const cssRuleMatcher = (rule) => rule.test && String(rule.test) === String(/\.css$/)
 const ruleChildren = (loader) => loader.use || loader.oneOf || Array.isArray(loader.loader) && loader.loader || []
@@ -34,7 +35,7 @@ const addBeforeRule = (rulesSource, ruleMatcher, value) => {
 
 const lessExtension = /\.less$/
 const lessModuleExtension = /\.module\.less$/
-let rewireLess = (config, env, lessLoaderOptions = {}) => {
+let rewireLessModule = (config, env, lessLoaderOptions = {}) => {
 
   // Exclude all less files (including module files) from file-loader
   const fileLoader = getLoader(config.module.rules, rule => {
@@ -43,7 +44,6 @@ let rewireLess = (config, env, lessLoaderOptions = {}) => {
   fileLoader.exclude.push(lessExtension)
 
     const cssRule = findRule(config.module.rules, cssRuleMatcher)
-
     const lessRule = cloneDeep(cssRule)
     const cssModulesRule = cloneDeep(cssRule)
 
@@ -61,14 +61,14 @@ let rewireLess = (config, env, lessLoaderOptions = {}) => {
     addAfterRule(lessRule, postcssLoaderMatcher, { loader: require.resolve('less-loader'), options: lessLoaderOptions })
     addBeforeRule(config.module.rules, fileLoaderMatcher, lessRule)
 
-    console.log(lessRule)
+    // console.log(lessRule)
 
     const lessModulesRule = cloneDeep(cssModulesRule)
     lessModulesRule.test = lessModuleExtension
     addAfterRule(lessModulesRule, postcssLoaderMatcher, { loader: require.resolve('less-loader'), options: lessLoaderOptions })
     addBeforeRule(config.module.rules, fileLoaderMatcher, lessModulesRule)
 
-    console.log(lessModulesRule)
+    // console.log(lessModulesRule)
 
     return config
 }
@@ -76,7 +76,7 @@ let rewireLess = (config, env, lessLoaderOptions = {}) => {
 module.exports = function override(config, env) {
 
     config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }], config)
-    config = rewireLess(config, env)
+    config = rewireLessModule(config, env)
     // config = rewireLess.withLoaderOptions({
     //     modifyVars: { /*"@primary-color": "#1DA57A"*/ },
     // })(config, env)

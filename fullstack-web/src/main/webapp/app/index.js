@@ -8,6 +8,7 @@ import createLoading from 'dva-loading'
 import 'moment/locale/zh-cn'
 
 import './index.less'
+
 // 1. Initialize
 const app = dva({
   history: createHistory(),
