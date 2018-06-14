@@ -62,10 +62,6 @@ subprojects { subproject ->
         maven { url "https://repo.spring.io/milestone" }
     }
 
-    task wrapper(type: Wrapper) {
-        gradleVersion = '4.7'
-    }
-
     dependencyManagement {
         imports {
             mavenBom 'io.github.jhipster:jhipster-dependencies:' + jhipster_dependencies_version
@@ -145,6 +141,10 @@ subprojects { subproject ->
         bootBuildInfo.mustRunAfter cleanResources
     }
 
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.7'
 }
 
 
