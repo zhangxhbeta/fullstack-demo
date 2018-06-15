@@ -63,6 +63,10 @@ module.exports = function override(config, env) {
   // Add babel import
   config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }], config)
 
+  if (env === 'development') {
+    config = injectBabelPlugin(['dva-hmr'], config)
+  }
+
   // Add less module support
   config = rewireLessModule(config, env, {
     modifyVars: { /*"@primary-color": "#1DA57A"*/ },
