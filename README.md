@@ -10,6 +10,13 @@ A scaffold combine SpringBoot and AntD, inspiration by jHipster
 * 在根目录，运行 `./gradlew :fullstack-web:bootRun`，启动后台 api
 * 进入 fullstack-web 目录运行 `npm start`
 
-部署阶段，通过命令将前台界面和后台代码一起打包为一个 sprint boot war 包
+## 打包方式
+
+推荐打包为 war 包，运行以下命令将前台界面和后台代码一起打包为一个 sprint boot war 包
 
 * 在根目录运行 `./gradlew :fullstack-web build -Pprod`
+
+## Docker 镜像
+
+* 在根目录运行 `./gradlew :fullstack-web bootWar buildDocker -Pprod`
+* 然后进入 fullstack-web 目录，运行 ``
