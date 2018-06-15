@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeSe
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
@@ -85,9 +86,6 @@ public class OAuth2ServerConfiguration {
           .headers()
           .frameOptions().disable()
         .and()
-          .sessionManagement()
-          .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
           .authorizeRequests()
           .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
           .antMatchers("/api/authenticate").permitAll()
@@ -97,7 +95,11 @@ public class OAuth2ServerConfiguration {
           .antMatchers("/management/**").hasRole("ADMIN")
           .antMatchers("/v2/api-docs/**").permitAll()
           .antMatchers("/swagger-resources/configuration/ui").permitAll()
-          .antMatchers("/swagger-ui/index.html").hasRole("ADMIN");
+          .antMatchers("/swagger-ui/index.html").hasRole("ADMIN")
+        .and()
+          .sessionManagement()
+          .sessionFixation().none()
+          .maximumSessions(1);
       // @formatter:on
     }
 
