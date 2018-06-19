@@ -12,7 +12,7 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}"
         classpath "io.spring.gradle:propdeps-plugin:0.0.9.RELEASE"
-        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.21"
+        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.5.1"
     }
 }
 
@@ -77,7 +77,7 @@ subprojects { subproject ->
         springBoot {
             buildInfo()
         }
-
+        spring_boot_version
         if (OperatingSystem.current().isWindows()) {
             // https://stackoverflow.com/questions/40037487/the-filename-or-extension-is-too-long-error-using-gradle
             task classpathJar(type: Jar) {
