@@ -3,15 +3,13 @@ package top.xhbeta.fullstack.demo.web.rest;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import top.xhbeta.fullstack.demo.domain.BaseResult;
+import top.xhbeta.fullstack.core.web.errors.BadRequestAlertException;
 import top.xhbeta.fullstack.demo.domain.Classroom;
 import top.xhbeta.fullstack.demo.service.ClassroomService;
 import top.xhbeta.fullstack.demo.support.ClassroomConverter;
 import top.xhbeta.fullstack.demo.web.vm.ClassroomVM;
-import top.xhbeta.fullstack.core.web.errors.BadRequestAlertException;
 import top.xhbeta.fullstack.scaffold.web.util.HeaderUtil;
 import top.xhbeta.fullstack.scaffold.web.util.PaginationUtil;
 

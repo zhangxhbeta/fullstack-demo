@@ -22,16 +22,19 @@ public class ClassroomService {
     this.classroomRepository = classroomRepository;
   }
 
+  @Transactional(readOnly = true)
   public Optional<Classroom> findById(Long id) {
     return classroomRepository.findById(id);
   }
 
+  @Transactional(readOnly = true)
   public Page<Classroom> findAll(String name, Integer pageNo, Integer pageSize) {
     Sort sort = new Sort(Sort.Direction.ASC, "id");
-    Pageable pageable = new PageRequest(pageNo - 1, pageSize, sort);
+    Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
     return classroomRepository.findByNameLikeAndState(name + "%", 1, pageable);
   }
 
+  @Transactional(readOnly = true)
   public List<Classroom> findAll(String name) {
     return classroomRepository.findByNameLikeAndState(name + "%", 1);
   }
@@ -41,12 +44,7 @@ public class ClassroomService {
     return classroomRepository.save(classroom);
   }
 
-<<<<<<< HEAD
   public Classroom updateClassroom(Long id, String name) {
-    // Classroom classroom = classroomRepository.findById(id).get();
-    // classroom.setName(name);
-    // return classroomRepository.save(classroom);
-
     return classroomRepository.findById(id)
       .map(classroom -> {
         classroom.setName(name);
@@ -63,22 +61,5 @@ public class ClassroomService {
         return classroom;
       })
       .orElseThrow(() -> new NoSuchElementException("Classroom not found"));
-
-
-    // Classroom classroom = classroomRepository.findById(id).get();
-    // classroom.setState(0);
-    // return classroomRepository.save(classroom);
-=======
-  public void updateClassroom(Long id, String name) {
-    Classroom classroom = classroomRepository.findById(id).get();
-    classroom.setName(name);
-    classroomRepository.save(classroom);
-  }
-
-  public void deleteClassroom(Long id) {
-    Classroom classroom = classroomRepository.findById(id).get();
-    classroom.setState(0);
-    classroomRepository.save(classroom);
->>>>>>> f1e59da74c36c3951f766e66f93273c6d151dc8a
   }
 }
