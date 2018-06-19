@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.zalando.problem.spring.web.advice.MediaTypes;
 import top.xhbeta.fullstack.demo.FullstackDemoApp;
 import top.xhbeta.fullstack.demo.web.errors.ExceptionTranslator;
-import top.xhbeta.fullstack.scaffold.web.errors.ErrorConstants;
+import top.xhbeta.fullstack.core.web.errors.ErrorConstants;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

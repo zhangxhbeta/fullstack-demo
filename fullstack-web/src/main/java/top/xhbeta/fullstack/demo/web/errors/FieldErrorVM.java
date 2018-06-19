@@ -1,4 +1,4 @@
-package top.xhbeta.fullstack.scaffold.web.errors;
+package top.xhbeta.fullstack.demo.web.errors;
 
 import java.io.Serializable;
 

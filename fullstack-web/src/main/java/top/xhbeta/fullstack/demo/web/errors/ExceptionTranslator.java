@@ -13,9 +13,8 @@ import org.zalando.problem.ProblemBuilder;
 import org.zalando.problem.Status;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.validation.ConstraintViolationProblem;
-import top.xhbeta.fullstack.scaffold.web.errors.BadRequestAlertException;
-import top.xhbeta.fullstack.scaffold.web.errors.ErrorConstants;
-import top.xhbeta.fullstack.scaffold.web.errors.FieldErrorVM;
+import top.xhbeta.fullstack.core.web.errors.BadRequestAlertException;
+import top.xhbeta.fullstack.core.web.errors.ErrorConstants;
 import top.xhbeta.fullstack.scaffold.web.util.HeaderUtil;
 
 import javax.annotation.Nonnull;

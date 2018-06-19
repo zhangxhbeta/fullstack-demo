@@ -3,4 +3,4 @@
  * <p>
  * More information on https://github.com/zalando/problem-spring-web
  */
-package top.xhbeta.fullstack.scaffold.web.errors;
+package top.xhbeta.fullstack.core.web.errors;

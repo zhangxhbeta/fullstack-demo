@@ -1,4 +1,4 @@
-package top.xhbeta.fullstack.scaffold.web.errors;
+package top.xhbeta.fullstack.core.web.errors;
 
 public class LoginAlreadyUsedException extends BadRequestAlertException {
 

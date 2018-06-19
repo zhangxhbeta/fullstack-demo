@@ -7,7 +7,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
-import top.xhbeta.fullstack.scaffold.web.errors.CustomParameterizedException;
+import top.xhbeta.fullstack.core.web.errors.CustomParameterizedException;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

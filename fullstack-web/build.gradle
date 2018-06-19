@@ -22,6 +22,7 @@ configurations {
 }
 
 dependencies {
+    compile project(":core")
     compile project(":scaffold")
     compile project(":fullstack")
 
