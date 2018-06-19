@@ -1,14 +1,15 @@
 package top.xhbeta.fullstack.demo.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.xhbeta.fullstack.demo.domain.Classroom;
 import top.xhbeta.fullstack.demo.domain.User;
 import top.xhbeta.fullstack.demo.repository.ClassroomRepository;
 import top.xhbeta.fullstack.demo.repository.UserRepository;
-import top.xhbeta.fullstack.demo.support.UserConverter;
 
 import java.util.Date;
 
@@ -17,25 +18,23 @@ import java.util.Date;
 public class UserService {
   private final UserRepository userRepository;
   private final ClassroomRepository classroomRepository;
-  private final UserConverter userConverter;
 
-  public UserService(UserRepository userRepository, ClassroomRepository classroomRepository, UserConverter userConverter) {
+  public UserService(UserRepository userRepository, ClassroomRepository classroomRepository) {
     this.userRepository = userRepository;
     this.classroomRepository = classroomRepository;
-    this.userConverter = userConverter;
   }
 
   public User findById(Long id) {
     return userRepository.findById(id).get();
   }
 
-  public Page<User> findAll(String name, Integer classId, Pageable pageable) {
+  public Page<User> findAll(String name, Long classId, Integer pageNo,Integer pageSize) {
+    Sort sort = new Sort(Sort.Direction.ASC, "id");
+    Pageable pageable = new PageRequest(pageNo-1, pageSize, sort);
     if (classId == -1) {
-      return userRepository.findByNameLikeAndState(name, 1, pageable)
-        .map(userConverter::convertToUser);
+      return userRepository.findByNameLikeAndState(name+"%", 1, pageable);
     } else {
-      return userRepository.findByNameLikeAndClassroomIdAndState(name, classId, 1, pageable)
-        .map(userConverter::convertToUser);
+      return userRepository.findByNameLikeAndClassroom_IdAndState(name+"%", classId, 1, pageable);
     }
   }
 

@@ -7,9 +7,11 @@ import java.util.Date;
 
 @Entity
 @Table(name = "lsw_users")
+@NamedEntityGraph(name = "User.lazy", attributeNodes = {@NamedAttributeNode("classroom")})
 public class User implements Serializable {
   private static final long serialVersionUID = 1L;
 
+  public User(){}
   public User(String name, Integer age, Date birthday,Classroom classroom,Integer state) {
     this.setName(name);
     this.setAge(age);
@@ -47,6 +49,7 @@ public class User implements Serializable {
   @JoinColumn(name = "classroom_id")
   private Classroom classroom;
 
+  @Transient
   private String classroomName;
 
   public Long getId() {

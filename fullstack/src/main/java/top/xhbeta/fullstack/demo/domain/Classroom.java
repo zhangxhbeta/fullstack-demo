@@ -9,7 +9,10 @@ import java.util.List;
 public class Classroom implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public Classroom(String name,Integer state) {
+  public Classroom() {
+  }
+
+  public Classroom(String name, Integer state) {
     this.setName(name);
     this.setState(state);
   }

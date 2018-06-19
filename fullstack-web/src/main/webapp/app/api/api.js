@@ -77,3 +77,11 @@ export async function fakeRegister(params) {
 export async function queryNotices() {
   return request('/api/notices')
 }
+
+export async function queryUserList(params) {
+  return request(`/api/management/users?${stringify(params)}`)
+}
+
+export async function queryClassroomList() {
+  return request('/api/management/classroom/all')
+}

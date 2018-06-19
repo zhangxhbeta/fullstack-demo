@@ -91,7 +91,7 @@ public class OAuth2ServerConfiguration {
           .antMatchers("/api/authenticate").permitAll()
           .antMatchers("/api/register").permitAll()
           .antMatchers("/api/profile-info").permitAll()
-          .antMatchers("/api/**").authenticated()
+          .antMatchers("/api/**").permitAll()
           .antMatchers("/management/**").hasRole("ADMIN")
           .antMatchers("/v2/api-docs/**").permitAll()
           .antMatchers("/swagger-resources/configuration/ui").permitAll()
@@ -170,7 +170,7 @@ public class OAuth2ServerConfiguration {
           .accessTokenValiditySeconds(60 * 60 * 24 * 7)
           .refreshTokenValiditySeconds(60 * 60 * 24 * 8)
           .scopes(defaultScope)
-          .redirectUris("http://localhost:8080/#/")
+          .redirectUris("http://localhost:8080/")
           .autoApprove(defaultScope)
         .and()
           .withClient("public")
@@ -179,7 +179,7 @@ public class OAuth2ServerConfiguration {
           .accessTokenValiditySeconds(60 * 60 * 24 * 7)
           .refreshTokenValiditySeconds(60 * 60 * 24 * 8)
           .scopes(defaultScope)
-          .redirectUris("http://localhost:8080/#/")
+          .redirectUris("http://localhost:8080/")
           .autoApprove(defaultScope);
     }
   }

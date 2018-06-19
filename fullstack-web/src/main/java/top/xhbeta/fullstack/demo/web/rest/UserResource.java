@@ -7,8 +7,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import top.xhbeta.fullstack.demo.domain.BasePager;
+import top.xhbeta.fullstack.demo.domain.BaseResult;
 import top.xhbeta.fullstack.demo.domain.User;
 import top.xhbeta.fullstack.demo.service.UserService;
+import top.xhbeta.fullstack.demo.support.UserConverter;
+import top.xhbeta.fullstack.demo.web.vm.UserVM;
 import top.xhbeta.fullstack.scaffold.web.util.HeaderUtil;
 import top.xhbeta.fullstack.scaffold.web.util.PaginationUtil;
 
@@ -16,20 +20,27 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/management/users")
+@RequestMapping("/api/management/users")
 public class UserResource {
-  @Autowired
-  private UserService userService;
+  private final UserService userService;
+  private final UserConverter userConverter;
 
-  @GetMapping(params = {"name", "classId"})
-  public ResponseEntity<List<User>> getAll(
-    @RequestParam(value = "name") String name,
-    @RequestParam(value = "classId") Integer classId,
-    Pageable pageable) {
+  public UserResource(UserService userService, UserConverter userConverter) {
+    this.userService = userService;
+    this.userConverter = userConverter;
+  }
 
-    Page<User> page = userService.findAll(name, classId, pageable);
+  @GetMapping
+  public ResponseEntity<BaseResult> getAll(
+    @RequestParam(value = "name", required = false, defaultValue = "") String name,
+    @RequestParam(value = "classId", required = false, defaultValue = "-1") Long classId,
+    @RequestParam(required = false, defaultValue = "1") Integer pageNo,
+    @RequestParam(required = false, defaultValue = "20") Integer pageSize) {
+    Page<UserVM> page = userService.findAll(name, classId, pageNo, pageSize)
+      .map(userConverter::convertToUser);
+    BaseResult baseResult = new BaseResult(page);
     HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/management/users");
-    return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    return new ResponseEntity<>(baseResult, headers, HttpStatus.OK);
   }
 
   @PostMapping(path = "/add", params = {"name", "age", "birthday", "classId"})
@@ -61,7 +72,7 @@ public class UserResource {
     return new ResponseEntity<>(user, headers, HttpStatus.OK);
   }
 
-  @PostMapping(path = "/delete/{id:.+}", params = {"name", "age", "classId"})
+  @PostMapping(path = "/delete/{id:.+}")
   public ResponseEntity<User> deleteUser(
     @PathVariable Long id) {
     User user = userService.deleteUser(id);

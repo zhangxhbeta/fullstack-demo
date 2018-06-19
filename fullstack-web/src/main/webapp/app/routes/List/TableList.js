@@ -409,6 +409,8 @@ class TableList extends PureComponent {
               loading={loading}
               data={data}
               columns={columns}
+              totalTitle={'title'}
+              totalKey={'total'}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
             />

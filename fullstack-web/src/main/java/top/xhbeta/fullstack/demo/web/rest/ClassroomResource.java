@@ -1,43 +1,51 @@
 package top.xhbeta.fullstack.demo.web.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import top.xhbeta.fullstack.demo.domain.BaseResult;
 import top.xhbeta.fullstack.demo.domain.Classroom;
 import top.xhbeta.fullstack.demo.service.ClassroomService;
+import top.xhbeta.fullstack.demo.support.ClassroomConverter;
+import top.xhbeta.fullstack.demo.web.vm.ClassroomVM;
 import top.xhbeta.fullstack.scaffold.web.util.HeaderUtil;
 import top.xhbeta.fullstack.scaffold.web.util.PaginationUtil;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/management/classroom")
+@RequestMapping("/api/management/classroom")
 public class ClassroomResource {
   private final ClassroomService classroomService;
 
-  public ClassroomResource(ClassroomService classroomService) {
+  private final ClassroomConverter classroomConverter;
+  public ClassroomResource(ClassroomService classroomService,ClassroomConverter classroomConverter) {
     this.classroomService = classroomService;
+    this.classroomConverter=classroomConverter;
   }
 
-  @GetMapping(params = {"name"})
+
+  @GetMapping
+  public ResponseEntity<BaseResult> getAll(
+    @RequestParam(value = "name", required = false, defaultValue = "") String name,
+    @RequestParam(required = false, defaultValue = "1") Integer pageNo,
+    @RequestParam(required = false, defaultValue = "20") Integer pageSize) {
+    Page<ClassroomVM> page = classroomService.findAll(name, pageNo, pageSize).map(classroomConverter::convertToClassroom);
+    BaseResult baseResult=new BaseResult(page);
+    HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/management/classroom");
+    return new ResponseEntity<>(baseResult, headers, HttpStatus.OK);
+  }
+
+  @GetMapping(path = "/all")
   public ResponseEntity<List<Classroom>> getAll(
-    @RequestParam(value = "name") String name) {
+    @RequestParam(value = "name", required = false, defaultValue = "") String name) {
 
     List<Classroom> classroomList = classroomService.findAll(name);
     return new ResponseEntity<>(classroomList, HttpStatus.OK);
-  }
-
-  @GetMapping(path = "/all", params = {"name"})
-  public ResponseEntity<List<Classroom>> getAll(
-    @RequestParam(value = "name") String name,
-    Pageable pageable) {
-
-    Page<Classroom> page = classroomService.findAll(name, pageable);
-    HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/management/classroom");
-    return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
   }
 
   @PostMapping(path = "/add", params = {"name"})

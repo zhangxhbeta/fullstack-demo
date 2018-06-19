@@ -1,15 +1,13 @@
 package top.xhbeta.fullstack.demo.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.xhbeta.fullstack.demo.domain.Classroom;
-import top.xhbeta.fullstack.demo.domain.User;
 import top.xhbeta.fullstack.demo.repository.ClassroomRepository;
-import top.xhbeta.fullstack.demo.repository.UserRepository;
-import top.xhbeta.fullstack.demo.support.ClassroomConverter;
-import top.xhbeta.fullstack.demo.support.UserConverter;
 
 import java.util.List;
 
@@ -17,24 +15,23 @@ import java.util.List;
 @Transactional
 public class ClassroomService {
   private final ClassroomRepository classroomRepository;
-  private final ClassroomConverter classroomConverter;
 
-  public ClassroomService(ClassroomRepository classroomRepository, ClassroomConverter classroomConverter) {
+  public ClassroomService(ClassroomRepository classroomRepository) {
     this.classroomRepository = classroomRepository;
-    this.classroomConverter = classroomConverter;
   }
 
   public Classroom findById(Long id) {
     return classroomRepository.findById(id).get();
   }
 
-  public Page<Classroom> findAll(String name, Pageable pageable) {
-    return classroomRepository.findByNameLikeAndState(name, 1, pageable)
-      .map(classroomConverter::convertToClassroom);
+  public Page<Classroom> findAll(String name, Integer pageNo,Integer pageSize) {
+    Sort sort = new Sort(Sort.Direction.ASC, "id");
+    Pageable pageable = new PageRequest(pageNo-1, pageSize, sort);
+    return classroomRepository.findByNameLikeAndState(name+"%", 1, pageable);
   }
 
   public List<Classroom> findAll(String name) {
-    return classroomRepository.findByNameLikeAndState(name, 1);
+    return classroomRepository.findByNameLikeAndState(name+"%", 1);
   }
 
   public Classroom saveClassroom(String name) {
