@@ -1,7 +1,7 @@
 // import fetch from 'dva/fetch'
 import axios from 'axios'
-import { notification } from 'antd'
-import { routerRedux } from 'dva/router'
+import {notification} from 'antd'
+import {routerRedux} from 'dva/router'
 import store from '../index'
 
 const codeMessage = {
@@ -21,6 +21,7 @@ const codeMessage = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
 }
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response
@@ -60,13 +61,25 @@ export default function request(url, options = {}) {
       }
     }
   }
-
   return axios({
     url: url,
     method: options.method ? options.method.toLowerCase() : 'get',
     data: options.body,
+    params: options.params
   })
-  .then(response => {
-    return response.data
-  })
+    .then(response => {
+      const {data, headers} = response
+      if (headers && headers["X-Total-Count"] !== undefined) {
+        return {
+          data,
+          pager: {
+            totalCount: headers["X-Total-Count"],
+            pageNo: headers["X-Page-No"],
+            pageSize: headers["X-Page-Size"]
+          }
+        }
+      } else {
+        return data
+      }
+    })
 }

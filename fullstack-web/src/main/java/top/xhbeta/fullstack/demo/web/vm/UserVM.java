@@ -7,6 +7,7 @@ public class UserVM {
   private Long id;
   private String name;
   private Integer age;
+  private Long birthday;
   private Long classroomId;
   private String classroomName;
 
@@ -14,6 +15,7 @@ public class UserVM {
     this.id = user.getId();
     this.name = user.getName();
     this.age = user.getAge();
+    this.birthday = user.getBirthday().getTime();
     Classroom classroom = user.getClassroom();
     this.classroomId = classroom.getId();
     this.classroomName = classroom.getName();
@@ -57,5 +59,13 @@ public class UserVM {
 
   public void setClassroomName(String classroomName) {
     this.classroomName = classroomName;
+  }
+
+  public Long getBirthday() {
+    return birthday;
+  }
+
+  public void setBirthday(Long birthday) {
+    this.birthday = birthday;
   }
 }

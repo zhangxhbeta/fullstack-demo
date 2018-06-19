@@ -23,21 +23,21 @@ public class ClassroomResource {
   private final ClassroomService classroomService;
 
   private final ClassroomConverter classroomConverter;
-  public ClassroomResource(ClassroomService classroomService,ClassroomConverter classroomConverter) {
+
+  public ClassroomResource(ClassroomService classroomService, ClassroomConverter classroomConverter) {
     this.classroomService = classroomService;
-    this.classroomConverter=classroomConverter;
+    this.classroomConverter = classroomConverter;
   }
 
 
   @GetMapping
-  public ResponseEntity<BaseResult> getAll(
+  public ResponseEntity<List<ClassroomVM>> getAll(
     @RequestParam(value = "name", required = false, defaultValue = "") String name,
     @RequestParam(required = false, defaultValue = "1") Integer pageNo,
     @RequestParam(required = false, defaultValue = "20") Integer pageSize) {
     Page<ClassroomVM> page = classroomService.findAll(name, pageNo, pageSize).map(classroomConverter::convertToClassroom);
-    BaseResult baseResult=new BaseResult(page);
     HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/management/classroom");
-    return new ResponseEntity<>(baseResult, headers, HttpStatus.OK);
+    return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
   }
 
   @GetMapping(path = "/all")
@@ -67,16 +67,16 @@ public class ClassroomResource {
   public ResponseEntity<Classroom> saveClassroom(
     @PathVariable Long id,
     @RequestParam(value = "name") String name) {
-    Classroom classroom = classroomService.updateClassroom(id, name);
+    classroomService.updateClassroom(id, name);
     HttpHeaders headers = HeaderUtil.createEntityCreationAlert("classroom", "/management/users/update");
-    return new ResponseEntity<>(classroom, headers, HttpStatus.OK);
+    return new ResponseEntity<>(null, headers, HttpStatus.OK);
   }
 
   @PostMapping(path = "/delete/{id:.+}", params = {"name", "age", "classId"})
   public ResponseEntity<Classroom> deleteClassroom(
     @PathVariable Long id) {
-    Classroom classroom = classroomService.deleteClassroom(id);
+    classroomService.deleteClassroom(id);
     HttpHeaders headers = HeaderUtil.createEntityCreationAlert("classroom", "/management/users/delete");
-    return new ResponseEntity<>(classroom, headers, HttpStatus.OK);
+    return new ResponseEntity<>(null, headers, HttpStatus.OK);
   }
 }

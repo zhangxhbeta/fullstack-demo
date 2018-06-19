@@ -24,14 +24,14 @@ public class ClassroomService {
     return classroomRepository.findById(id).get();
   }
 
-  public Page<Classroom> findAll(String name, Integer pageNo,Integer pageSize) {
+  public Page<Classroom> findAll(String name, Integer pageNo, Integer pageSize) {
     Sort sort = new Sort(Sort.Direction.ASC, "id");
-    Pageable pageable = new PageRequest(pageNo-1, pageSize, sort);
-    return classroomRepository.findByNameLikeAndState(name+"%", 1, pageable);
+    Pageable pageable = new PageRequest(pageNo - 1, pageSize, sort);
+    return classroomRepository.findByNameLikeAndState(name + "%", 1, pageable);
   }
 
   public List<Classroom> findAll(String name) {
-    return classroomRepository.findByNameLikeAndState(name+"%", 1);
+    return classroomRepository.findByNameLikeAndState(name + "%", 1);
   }
 
   public Classroom saveClassroom(String name) {
@@ -39,15 +39,15 @@ public class ClassroomService {
     return classroomRepository.save(classroom);
   }
 
-  public Classroom updateClassroom(Long id, String name) {
+  public void updateClassroom(Long id, String name) {
     Classroom classroom = classroomRepository.findById(id).get();
     classroom.setName(name);
-    return classroomRepository.save(classroom);
+    classroomRepository.save(classroom);
   }
 
-  public Classroom deleteClassroom(Long id) {
+  public void deleteClassroom(Long id) {
     Classroom classroom = classroomRepository.findById(id).get();
     classroom.setState(0);
-    return classroomRepository.save(classroom);
+    classroomRepository.save(classroom);
   }
 }
