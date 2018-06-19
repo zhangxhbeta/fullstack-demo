@@ -1,4 +1,13 @@
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
     compile "org.hibernate.validator:hibernate-validator"
+
+    testCompile("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: 'com.vaadin.external.google', module: 'android-json'
+    }
+    testCompile "org.springframework.boot:spring-boot-test"
+    testCompile "org.mockito:mockito-core"
+    testCompile "org.assertj:assertj-core"
+    testCompile "junit:junit"
+    testCompile "com.h2database:h2"
 }
