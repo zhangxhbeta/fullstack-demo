@@ -6,7 +6,7 @@ import {getProfileBasicData} from './mock/profile'
 import {getProfileAdvancedData} from './mock/profile'
 import {getNotices} from './mock/notices'
 import {getClassroomAll} from './mock/classroom'
-import {getUsers} from './mock/users'
+import {getUsers, addUser, getUser, updateUser, deleteUser} from './mock/users'
 
 export default {
 
@@ -110,6 +110,26 @@ export default {
     mock.onGet('/api/management/users').reply(({params}) => {
       const {data, pager: {pageNo, pageSize, totalCount}} = getUsers(params)
       return [200, data, {"X-Total-Count": totalCount, "X-Page-No": pageNo, "X-Page-Size": pageSize}]
+    })
+    mock.onPost('/api/management/users/add').reply(({data}) => {
+      addUser(JSON.parse(data))
+      return [200]
+    })
+    mock.onGet(/\/api\/management\/users\/\d+/).reply(({url}) => {
+      const m = url.match(/\/api\/management\/users\/(\d+)/)
+      let data = null
+      if (m != null) {
+        data = getUser(m[1])
+      }
+      return [200, data]
+    })
+    mock.onPost('/api/management/users/update').reply(({params, data}) => {
+      updateUser(params, JSON.parse(data))
+      return [200]
+    })
+    mock.onPost('/api/management/users/delete').reply(({params}) => {
+      deleteUser(params)
+      return [200]
     })
     mock.onGet('/api/management/classroom/all').reply(config => {
       return [200, getClassroomAll()]

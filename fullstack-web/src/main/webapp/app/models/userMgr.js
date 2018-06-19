@@ -1,4 +1,4 @@
-import { queryUserList, removeRule, addRule } from '../api/api'
+import {queryUserList, getUser, deleteUser, updateUser, createUser} from '../api/api'
 
 export default {
   namespace: 'userMgr',
@@ -8,30 +8,44 @@ export default {
       data: [],
       pager: {},
     },
+    detail: null,
+    fields: {}
   },
 
   effects: {
-    *fetch({ payload }, { call, put }) {
+    * fetch({payload}, {call, put}) {
       const response = yield call(queryUserList, payload)
       yield put({
         type: 'save',
         payload: response,
       })
-    },
-    *add({ payload, callback }, { call, put }) {
-      const response = yield call(addRule, payload)
       yield put({
-        type: 'save',
+        type: 'saveField',
+        payload,
+      })
+    },
+    * detail({payload, callback}, {call, put}) {
+      const response = yield call(getUser, payload)
+      yield put({
+        type: 'saveDetail',
         payload: response,
       })
       if (callback) callback()
     },
-    *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeRule, payload)
+    * add({payload, callback}, {call, put}) {
+      yield call(createUser, payload)
+      if (callback) callback()
+    },
+    * update({payload, callback}, {call, put}) {
+      yield call(updateUser, payload)
       yield put({
-        type: 'save',
-        payload: response,
+        type: 'saveDetail',
+        payload: null,
       })
+      if (callback) callback()
+    },
+    * remove({payload, callback}, {call, put}) {
+      yield call(deleteUser, payload)
       if (callback) callback()
     },
   },
@@ -41,6 +55,18 @@ export default {
       return {
         ...state,
         data: action.payload,
+      }
+    },
+    saveDetail(state, action) {
+      return {
+        ...state,
+        detail: action.payload,
+      }
+    },
+    saveField(state, action) {
+      return {
+        ...state,
+        fields: action.payload,
       }
     },
   },

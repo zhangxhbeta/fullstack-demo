@@ -50,12 +50,10 @@ public class UserService {
     user.setName(name);
     user.setAge(age);
     user.setClassroom(classroom);
-    userRepository.save(user);
   }
 
   public void deleteUser(Long id) {
     User user = userRepository.findById(id).get();
     user.setState(0);
-    userRepository.save(user);
   }
 }

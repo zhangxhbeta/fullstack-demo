@@ -1,4 +1,4 @@
-import { stringify } from 'qs'
+import {stringify} from 'qs'
 import request from '../utils/request'
 
 export async function queryProjectNotice() {
@@ -79,8 +79,34 @@ export async function queryNotices() {
 }
 
 export async function queryUserList(params) {
-  return request(`/api/management/users`,{
+  return request(`/api/management/users`, {
     params
+  })
+}
+
+export async function createUser(params) {
+  return request('/api/management/users/add', {
+    method: 'POST',
+    body: params,
+  })
+}
+
+export async function getUser({id}) {
+  return request('/api/management/users/'+id)
+}
+
+export async function updateUser(params) {
+  return request('/api/management/users/update', {
+    method: 'POST',
+    body: params,
+    params: {id: params.id}
+  })
+}
+
+export async function deleteUser(params) {
+  return request('/api/management/users/delete', {
+    method: 'POST',
+    params,
   })
 }
 
