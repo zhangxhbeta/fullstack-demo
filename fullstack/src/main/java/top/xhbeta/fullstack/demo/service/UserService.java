@@ -28,13 +28,13 @@ public class UserService {
     return userRepository.findById(id).get();
   }
 
-  public Page<User> findAll(String name, Long classId, Integer pageNo,Integer pageSize) {
+  public Page<User> findAll(String name, Long classId, Integer pageNo, Integer pageSize) {
     Sort sort = new Sort(Sort.Direction.ASC, "id");
-    Pageable pageable = new PageRequest(pageNo-1, pageSize, sort);
+    Pageable pageable = new PageRequest(pageNo - 1, pageSize, sort);
     if (classId == -1) {
-      return userRepository.findByNameLikeAndState(name+"%", 1, pageable);
+      return userRepository.findByNameLikeAndState(name + "%", 1, pageable);
     } else {
-      return userRepository.findByNameLikeAndClassroom_IdAndState(name+"%", classId, 1, pageable);
+      return userRepository.findByNameLikeAndClassroom_IdAndState(name + "%", classId, 1, pageable);
     }
   }
 
@@ -44,18 +44,18 @@ public class UserService {
     return userRepository.save(user);
   }
 
-  public User updateUser(Long id, String name, Integer age, Long classId) {
+  public void updateUser(Long id, String name, Integer age, Long classId) {
     User user = userRepository.findById(id).get();
     Classroom classroom = classroomRepository.findById(classId).get();
     user.setName(name);
     user.setAge(age);
     user.setClassroom(classroom);
-    return userRepository.save(user);
+    userRepository.save(user);
   }
 
-  public User deleteUser(Long id) {
+  public void deleteUser(Long id) {
     User user = userRepository.findById(id).get();
     user.setState(0);
-    return userRepository.save(user);
+    userRepository.save(user);
   }
 }

@@ -41,6 +41,7 @@ public class ClassroomService {
     return classroomRepository.save(classroom);
   }
 
+<<<<<<< HEAD
   public Classroom updateClassroom(Long id, String name) {
     // Classroom classroom = classroomRepository.findById(id).get();
     // classroom.setName(name);
@@ -67,5 +68,17 @@ public class ClassroomService {
     // Classroom classroom = classroomRepository.findById(id).get();
     // classroom.setState(0);
     // return classroomRepository.save(classroom);
+=======
+  public void updateClassroom(Long id, String name) {
+    Classroom classroom = classroomRepository.findById(id).get();
+    classroom.setName(name);
+    classroomRepository.save(classroom);
+  }
+
+  public void deleteClassroom(Long id) {
+    Classroom classroom = classroomRepository.findById(id).get();
+    classroom.setState(0);
+    classroomRepository.save(classroom);
+>>>>>>> f1e59da74c36c3951f766e66f93273c6d151dc8a
   }
 }

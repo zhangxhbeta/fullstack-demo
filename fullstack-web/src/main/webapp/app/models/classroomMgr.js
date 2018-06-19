@@ -15,7 +15,7 @@ export default {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryClassroomList, payload)
       yield put({
-        type: 'save',
+        type: 'saveList',
         payload: response,
       })
     },
@@ -39,6 +39,12 @@ export default {
 
   reducers: {
     save(state, action) {
+      return {
+        ...state,
+        data: action.payload,
+      }
+    },
+    saveList(state, action) {
       return {
         ...state,
         list: action.payload,

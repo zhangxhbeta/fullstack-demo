@@ -1,10 +1,12 @@
 import mockjs from 'mockjs'
-import { getRule, postRule } from './mock/rule'
-import { getActivities, getNotice, getFakeList } from './mock/api'
-import { getFakeChartData } from './mock/chart'
-import { getProfileBasicData } from './mock/profile'
-import { getProfileAdvancedData } from './mock/profile'
-import { getNotices } from './mock/notices'
+import {getRule, postRule} from './mock/rule'
+import {getActivities, getNotice, getFakeList} from './mock/api'
+import {getFakeChartData} from './mock/chart'
+import {getProfileBasicData} from './mock/profile'
+import {getProfileAdvancedData} from './mock/profile'
+import {getNotices} from './mock/notices'
+import {getClassroomAll} from './mock/classroom'
+import {getUsers} from './mock/users'
 
 export default {
 
@@ -45,7 +47,7 @@ export default {
     mock.onGet('/api/project/notice').reply(200, getNotice)
     mock.onGet('/api/activities').reply(200, getActivities)
 
-  mock.onGet(/\/api\/rule[^/]*/).reply(config => {
+    mock.onGet(/\/api\/rule[^/]*/).reply(config => {
       let result = getRule(config, null)
       return [
         200, result
@@ -58,10 +60,10 @@ export default {
       ]
     })
 
-    mock.onPost('/api/forms').reply(200, { message: 'Ok' })
+    mock.onPost('/api/forms').reply(200, {message: 'Ok'})
 
     mock.onGet('/api/tags').reply(200, mockjs.mock({
-      'list|100': [{ name: '@city', 'value|1-100': 150, 'type|0-2': 1 }],
+      'list|100': [{name: '@city', 'value|1-100': 150, 'type|0-2': 1}],
     }))
 
     mock.onGet(/\/api\/fake_list[^/]*/).reply(config => {
@@ -76,7 +78,7 @@ export default {
     mock.onGet('/api/profile/advanced').reply(200, getProfileAdvancedData)
 
     mock.onPost('/api/login/account').reply((config) => {
-      const { password, userName, type } = JSON.parse(config.data)
+      const {password, userName, type} = JSON.parse(config.data)
       if (password === '888888' && userName === 'admin') {
         return [
           200, {
@@ -89,22 +91,29 @@ export default {
       if (password === '123456' && userName === 'user') {
         return [
           200, {
-          status: 'ok',
-          type,
-          currentAuthority: 'user',
-        }]
+            status: 'ok',
+            type,
+            currentAuthority: 'user',
+          }]
       }
       return [
         200, {
-        status: 'error',
-        type,
-        currentAuthority: 'guest',
-      }]
+          status: 'error',
+          type,
+          currentAuthority: 'guest',
+        }]
     })
 
-    mock.onPost('/api/register').reply(200, { status: 'ok', currentAuthority: 'user' })
+    mock.onPost('/api/register').reply(200, {status: 'ok', currentAuthority: 'user'})
 
     mock.onGet('/api/notices').reply(200, getNotices)
+    mock.onGet('/api/management/users').reply(({params}) => {
+      const {data, pager: {pageNo, pageSize, totalCount}} = getUsers(params)
+      return [200, data, {"X-Total-Count": totalCount, "X-Page-No": pageNo, "X-Page-Size": pageSize}]
+    })
+    mock.onGet('/api/management/classroom/all').reply(config => {
+      return [200, getClassroomAll()]
+    })
     mock.onGet('/api/500').reply(500, {
       timestamp: 1513932555104,
       status: 500,

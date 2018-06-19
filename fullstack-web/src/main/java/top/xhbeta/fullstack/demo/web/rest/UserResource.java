@@ -31,16 +31,16 @@ public class UserResource {
   }
 
   @GetMapping
-  public ResponseEntity<BaseResult> getAll(
+  public ResponseEntity<List<UserVM>> getAll(
     @RequestParam(value = "name", required = false, defaultValue = "") String name,
     @RequestParam(value = "classId", required = false, defaultValue = "-1") Long classId,
     @RequestParam(required = false, defaultValue = "1") Integer pageNo,
     @RequestParam(required = false, defaultValue = "20") Integer pageSize) {
+    System.out.println(classId);
     Page<UserVM> page = userService.findAll(name, classId, pageNo, pageSize)
       .map(userConverter::convertToUser);
-    BaseResult baseResult = new BaseResult(page);
     HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/management/users");
-    return new ResponseEntity<>(baseResult, headers, HttpStatus.OK);
+    return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
   }
 
   @PostMapping(path = "/add", params = {"name", "age", "birthday", "classId"})
@@ -67,16 +67,16 @@ public class UserResource {
     @RequestParam(value = "name") String name,
     @RequestParam(value = "age") Integer age,
     @RequestParam(value = "classId") Long classId) {
-    User user = userService.updateUser(id, name, age, classId);
+   userService.updateUser(id, name, age, classId);
     HttpHeaders headers = HeaderUtil.createEntityCreationAlert("user", "/management/users/update");
-    return new ResponseEntity<>(user, headers, HttpStatus.OK);
+    return new ResponseEntity<>(null, headers, HttpStatus.OK);
   }
 
   @PostMapping(path = "/delete/{id:.+}")
   public ResponseEntity<User> deleteUser(
     @PathVariable Long id) {
-    User user = userService.deleteUser(id);
+      userService.deleteUser(id);
     HttpHeaders headers = HeaderUtil.createEntityCreationAlert("user", "/management/users/delete");
-    return new ResponseEntity<>(user, headers, HttpStatus.OK);
+    return new ResponseEntity<>(null, headers, HttpStatus.OK);
   }
 }

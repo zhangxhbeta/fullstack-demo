@@ -113,7 +113,7 @@ class UserMgr extends PureComponent {
             <FormItem label="班级">
               {getFieldDecorator('classId')(
                 <Select placeholder="请选择"  style={{width: '100%'}}>
-                  <Option value={-1}>全部</Option>
+                  <Option value={''}>全部</Option>
                   {classroomMgr.list.map(item=>(<Option value={item.id} key={item.id}>{item.name}</Option>))}
                 </Select>
               )}
@@ -193,9 +193,9 @@ class UserMgr extends PureComponent {
         title: '操作',
         render: () => (
           <Fragment>
-            <a href="">配置</a>
+            <a href="">修改</a>
             <Divider type="vertical" />
-            <a href="">订阅警报</a>
+            <a href="">删除</a>
           </Fragment>
         ),
       },

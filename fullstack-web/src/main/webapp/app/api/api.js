@@ -79,7 +79,9 @@ export async function queryNotices() {
 }
 
 export async function queryUserList(params) {
-  return request(`/api/management/users?${stringify(params)}`)
+  return request(`/api/management/users`,{
+    params
+  })
 }
 
 export async function queryClassroomList() {
