@@ -35,5 +35,7 @@ export default {
 
     const mock = new MockAdapter(axios, { delayResponse: delay })
     antdMock.bootstrap(mock)
+
+    mock.onAny().passThrough();
   }
 }

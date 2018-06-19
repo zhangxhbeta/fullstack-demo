@@ -90,11 +90,13 @@ function setup(debug = false) {
             dispatch(routerRedux.push('/exception/500'))
             break
           case 404:
-            if (debug) {
-              console.log('404 url debug')
-              console.log(error.config)
+            if (process.env.NODE_ENV === 'development') {
+              if (debug) {
+                console.log(error.config)
+              }
+            } else {
+              dispatch(routerRedux.push('/exception/404'))
             }
-            dispatch(routerRedux.push('/exception/404'))
             break
           case 400:
             error.message = errMsg || '请求失败，请稍后再试'
