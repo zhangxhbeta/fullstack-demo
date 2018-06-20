@@ -22,3 +22,7 @@ A scaffold combine SpringBoot and AntD, inspiration by jHipster
 * 在根目录运行 `./gradlew :fullstack-web bootWar buildDocker -Pprod`
 * 然后进入 fullstack-web 目录，运行 `docker-compose -f src/main/docker/app.yml up`
 * 访问浏览器 `http://localhost:8080`
+
+### 修改测试
+
+* 1
