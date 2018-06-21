@@ -23,6 +23,9 @@ A scaffold combine SpringBoot and AntD, inspiration by jHipster
 * 然后进入 fullstack-web 目录，运行 `docker-compose -f src/main/docker/app.yml up`
 * 访问浏览器 `http://localhost:8080`
 
+### 服务端别人修改
+
+* test 1
 
 ### 修改测试
 * test 1
