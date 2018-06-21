@@ -30,3 +30,4 @@ A scaffold combine SpringBoot and AntD, inspiration by jHipster
 ### 修改测试
 * test 1
 * test 2
+* test 3
