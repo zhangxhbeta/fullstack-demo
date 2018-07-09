@@ -77,7 +77,7 @@ subprojects { subproject ->
         springBoot {
             buildInfo()
         }
-        spring_boot_version
+
         if (OperatingSystem.current().isWindows()) {
             // https://stackoverflow.com/questions/40037487/the-filename-or-extension-is-too-long-error-using-gradle
             task classpathJar(type: Jar) {

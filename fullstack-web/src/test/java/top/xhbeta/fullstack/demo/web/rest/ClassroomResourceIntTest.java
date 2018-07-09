@@ -49,6 +49,9 @@ public class ClassroomResourceIntTest {
   @Autowired
   private MockMvc mockMvc;
 
+  public ClassroomResourceIntTest() {
+  }
+
   @Before
   public void setup() {
     ClassroomResource classroomResource = new ClassroomResource(classroomService, classroomConverter);

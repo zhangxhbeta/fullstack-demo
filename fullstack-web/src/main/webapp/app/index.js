@@ -7,7 +7,7 @@ import createHistory from 'history/createHashHistory'
 import createLoading from 'dva-loading'
 import 'moment/locale/zh-cn'
 
-import './index.less'
+import './index.module.less'
 
 import setup from './api/setup'
 setup(true)
